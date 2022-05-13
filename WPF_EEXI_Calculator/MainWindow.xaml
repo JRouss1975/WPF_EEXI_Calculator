@@ -1,0 +1,83 @@
+﻿<Window
+    x:Class="WPF_EEXI_Calculator.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WPF_EEXI_Calculator" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ml="clr-namespace:MoralesLarios.Utilities.Excel;assembly=MoralesLarios.Utilities" Title="MainWindow"
+    Width="1024" Height="768"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}"
+    mc:Ignorable="d">
+
+    <DockPanel>
+
+        <Menu
+            Height="Auto" DockPanel.Dock="Top"
+            IsMainMenu="True">
+            <MenuItem Header="_File">
+                <MenuItem Click="menuOpen_Click" Header="_Open Projects" />
+                <MenuItem Click="menuSave_Click" Header="_Save Projects" />
+
+                <Separator />
+                <MenuItem Header="_Exit" />
+            </MenuItem>
+            <MenuItem Header="_Help" />
+        </Menu>
+
+        <Grid DockPanel.Dock="Bottom">
+
+            <TabControl
+                Name="tabControl1" HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch" SelectionChanged="tabControl1_SelectionChanged">
+
+                <TabItem Header="Projects">
+                    <DataGrid
+                        x:Name="dgvProjects" AutoGenerateColumns="True"
+                        ItemsSource="{Binding lstEEXICalculations}"
+                        SelectionChanged="dgvProjects_SelectionChanged" />
+                </TabItem>
+
+                <TabItem DataContext="{Binding SelectedItem, ElementName=dgvProjects, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Vessel">
+                    <StackPanel>
+
+
+                        <TextBlock Text="{Binding Vessel.VesselName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="{Binding Vessel.HullNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='Not Set', TargetNullValue='Null'}" />
+                        <TextBlock Text="{Binding Vessel.VesselType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <DataGrid
+                            x:Name="dgvMainEngines" Height="200"
+                            AutoGenerateColumns="True"
+                            DataContext="{Binding ElementName=dgvProjects, Path=SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}"
+                            ItemsSource="{Binding MainEngines, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}" />
+
+                        <ComboBox ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:FuelType}}}" SelectedItem="{Binding ElementName=dgvMainEngines, Path=SelectedItem.Fuel.Type}" />
+
+                        <TextBlock Text="{Binding ElementName=dgvMainEngines, Path=SelectedItem.Fuel.LCV}" />
+                        <TextBlock Text="{Binding ElementName=dgvMainEngines, Path=SelectedItem.Fuel.Reference}" />
+                        <TextBlock Text="{Binding ElementName=dgvMainEngines, Path=SelectedItem.Fuel.CarbonContent}" />
+                        <TextBlock Text="{Binding ElementName=dgvMainEngines, Path=SelectedItem.Fuel.CF}" />
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="Speed vs Power Curve">
+                    <local:UCurve
+                        x:Name="crvSpeedPower"
+                        CurveData="{Binding Vessel.SpeedPowerCurveData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                        DataContext="{Binding ElementName=dgvProjects, Path=SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}"
+                        FitOrder="{Binding Vessel.SpeedPowerCurveFitOrder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}" />
+                </TabItem>
+
+                <TabItem Header="ME SFOC Curve">
+                    <local:UCurve
+                        x:Name="crvSFOCME"
+                        CurveData="{Binding SFOCMECurveData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}"
+                        DataContext="{Binding ElementName=dgvMainEngines, Path=SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}"
+                        FitOrder="{Binding SFOCMECurveFitOrder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True}" />
+                </TabItem>
+
+            </TabControl>
+
+        </Grid>
+
+    </DockPanel>
+</Window>

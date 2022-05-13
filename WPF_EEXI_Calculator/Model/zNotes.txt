@@ -1,0 +1,44 @@
+﻿   /// WIP---->
+        //public double PME
+        //{
+        //    get
+        //    {
+        //        switch (EngineType)
+        //        {
+        //            case EngineType.Diesel:
+        //                if (MCRMELim > 0)
+        //                    return Math.Min(0.75 * (MCRME - PPTO), 0.83 * (MCRMELim - PPTO));
+        //                else if (MCRMELim == 0)
+        //                    return 0.75 * (MCRME - PPTO);
+        //                return -1;
+
+        //            case EngineType.LNGSteamTurbine:
+        //                if (IsShaftGenerator)
+        //                    return 0.83 * (0.83 * MCRSteam - PPTO);
+        //                return 0.83 * MCRSteam;
+
+        //            case EngineType.LNGDieselElectric:
+        //                return 0.83 * (MPPMotor / η);
+        //        }
+        //        return -1;
+        //    }
+        //}
+
+        //public double SFOC
+        //{
+        //    get
+        //    {
+        //        double[] FitCurve;
+        //        if (SFOCMECurveData != null)
+        //        {
+        //            if (SFOCMECurveData.Count > 0 && SFOCMECurveFitOrder < SFOCMECurveData.Count)
+        //            {
+        //                double[] xc = SFOCMECurveData.OrderBy(i => i.X).Select(i => i.X).ToArray();
+        //                double[] yc = SFOCMECurveData.OrderBy(i => i.X).Select(i => i.Y).ToArray();
+        //                FitCurve = Fit.Polynomial(xc, yc, SFOCMECurveFitOrder, MathNet.Numerics.LinearRegression.DirectRegressionMethod.QR);
+        //                return MathNet.Numerics.Polynomial.Evaluate(this.PME, FitCurve);
+        //            }
+        //        }
+        //        return -1;
+        //    }
+        //}

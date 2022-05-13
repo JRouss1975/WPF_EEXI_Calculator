@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <StartupObject>WPF_EEXI_Calculator.App</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
+    <PackageReference Include="MoralesLarios.Utilities" Version="1.0.0.1" />
+    <PackageReference Include="ScottPlot.WPF" Version="4.1.16" />
+  </ItemGroup>
+
+</Project>
